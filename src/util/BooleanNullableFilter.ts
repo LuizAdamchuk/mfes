@@ -1,7 +1,7 @@
 import { Field, InputType } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsOptional } from "class-validator";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 @InputType({
   isAbstract: true,
   description: undefined,
@@ -15,7 +15,9 @@ export class BooleanNullableFilter {
   @Field(() => Boolean, {
     nullable: true,
   })
-  @Type(() => Boolean)
+  @Transform(({ value }) => {
+    return value === "true" ? true : value === "false" ? false : undefined;
+  })
   equals?: boolean | null;
 
   @ApiProperty({
@@ -26,6 +28,8 @@ export class BooleanNullableFilter {
   @Field(() => Boolean, {
     nullable: true,
   })
-  @Type(() => Boolean)
+  @Transform(({ value }) => {
+    return value === "true" ? true : value === "false" ? false : undefined;
+  })
   not?: boolean | null;
 }
