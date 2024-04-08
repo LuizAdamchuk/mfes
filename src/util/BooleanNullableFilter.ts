@@ -15,10 +15,8 @@ export class BooleanNullableFilter {
   @Field(() => Boolean, {
     nullable: true,
   })
-  @Transform((x) => {
-    console.log("🚀 ~ BooleanNullableFilter ~ @Transform ~ x:", x);
-
-    return x.value === "true" ? true : x.value === "false" ? false : undefined;
+  @Transform(({ value }) => {
+    return value === "true" ? true : value === "false" ? false : undefined;
   })
   equals?: boolean | null;
 
