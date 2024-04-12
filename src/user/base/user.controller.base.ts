@@ -43,6 +43,11 @@ export class UserControllerBase {
         updatedAt: true,
         username: true,
         mfes: {
+          where: {
+            mfe: {
+              active: true,
+            },
+          },
           select: {
             id: true,
             mfeId: true,
@@ -52,10 +57,10 @@ export class UserControllerBase {
         },
       },
     });
-    
+
     // Pegar todos os MFes authorizedRequired false
     const freeMfesIds = await this.mfeService.getFreeMfesIds();
-    
+
     // Criar o vinculo na UserMfes desse usuário recem criado com todos esses Mfes
     const mfeUsers = freeMfesIds.map((mfeId) => ({
       userId: user.id,
@@ -81,6 +86,11 @@ export class UserControllerBase {
         updatedAt: true,
         username: true,
         mfes: {
+          where: {
+            mfe: {
+              active: true,
+            },
+          },
           select: {
             id: true,
             mfeId: true,
@@ -107,6 +117,11 @@ export class UserControllerBase {
         updatedAt: true,
         username: true,
         mfes: {
+          where: {
+            mfe: {
+              active: true,
+            },
+          },
           select: {
             id: true,
             mfeId: true,

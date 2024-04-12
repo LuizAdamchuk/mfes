@@ -63,6 +63,7 @@ export class MfeControllerBase {
   @ApiNestedQuery(MfeFindManyArgs)
   async mfes(@common.Req() request: Request): Promise<Mfe[]> {
     const args = plainToClass(MfeFindManyArgs, request.query);
+
     return this.service.mfes({
       ...args,
       select: {
@@ -130,7 +131,19 @@ export class MfeControllerBase {
         return mfe;
       }
 
-      const userIds = await this.userService.getUserIds();
+      let userIds = await this.userService.getUserIds();
+
+      const existingMfeUsers = await this.usersMfeService.usersMfes({
+        where: {
+          mfeId: { equals: mfe.id },
+          userId: { in: userIds },
+        },
+      });
+
+      userIds = userIds.filter(
+        (userId) =>
+          !existingMfeUsers?.some((mfeUser) => mfeUser.userId === userId)
+      );
 
       const mfeUsers = userIds.map((userId) => ({ userId, mfeId: mfe.id }));
 
